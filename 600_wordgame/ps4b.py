@@ -53,9 +53,25 @@ def compPlayHand(hand, wordList, n):
     wordList: list (string)
     n: integer (HAND_SIZE; i.e., hand size required for additional points)
     """
-    # TO DO ... <-- Remove this comment when you code this function
+    handLen = calculateHandlen(hand)
+    totalHandScore = 0
+    compGuess = ''
+    while compGuess != None:
+        displayHand(hand)
+        compGuess = compChooseWord(hand, wordList, n)
+        if compGuess != None:
+            guessScore = getWordScore(compGuess, n)
+            totalHandScore += guessScore
+            hand = updateHand(hand, compGuess)
+            handLen = calculateHandlen(hand)
+            if handLen == 0:
+                print 'Run out of letters.'
+                break
+            print '"'+str(compGuess)+'"', 'earned', str(guessScore), 'points. Total:', str(totalHandScore), 'points'
+        else:
+            bestWord = None
+    print 'Total score:',  str(totalHandScore), 'points.'
 
-#
 # Problem #8: Playing a game
 #
 #
@@ -83,9 +99,40 @@ def playGame(wordList):
 
     wordList: list (string)
     """
-    # TO DO... <-- Remove this comment when you code this function
-    print "playGame not yet implemented." # <-- Remove this when you code this function
-
+    hand = {}
+    while True:
+        userInput = raw_input('Enter n to deal a new hand, r to replay the last hand, or e to end game:')
+        if userInput == 'n':
+            while True:
+                userInput = raw_input('Enter u to have yourself play, c to have the computer play:')
+                if userInput == 'u':
+                    hand = dealHand(HAND_SIZE)
+                    playHand(hand, wordList, HAND_SIZE)
+                    break
+                elif userInput == 'c':
+                    hand = dealHand(HAND_SIZE)
+                    compPlayHand(hand, wordList, HAND_SIZE)
+                    break
+                else:
+                    print 'Invalid command.'
+        elif userInput == 'r':
+            if len(hand) != 0:
+                while True:
+                    userInput = raw_input('Enter u to have yourself play, c to have the computer play:')
+                    if userInput == 'u':
+                        playHand(hand, wordList, HAND_SIZE)
+                        break
+                    elif userInput == 'c':
+                        compPlayHand(hand, wordList, HAND_SIZE)
+                        break
+                    else:
+                        print 'Invalid command.'
+            else:
+                print 'You have not played a hand yet. Please play a new hand first!'
+        elif userInput == 'e':
+            break
+        else:
+            print 'Invalid command.'
 
 #
 # Build data structures used for entire session and play game

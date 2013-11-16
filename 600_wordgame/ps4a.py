@@ -255,6 +255,9 @@ def playHand(hand, wordList, n):
                 totalHandScore += guessScore
                 hand = updateHand(hand, playerInput)
                 handLen = calculateHandlen(hand)
+                if handLen == 0:
+                    print 'Run out of letters.'
+                    break
                 print str(playerInput), 'earned', str(guessScore), 'points. Total:', str(totalHandScore), 'points'
             else:
                 print 'Invalid word, please try again.'
@@ -298,4 +301,4 @@ def playGame(wordList):
 #
 if __name__ == '__main__':
     wordList = loadWords()
-    playGame(wordList)
+    playHand(dealHand(HAND_SIZE), wordList, HAND_SIZE)
